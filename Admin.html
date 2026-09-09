@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RK JEWELRY Admin Board</title>
+    <link rel="icon" type="image/png" href="pic/favicon.png">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --accent-purple: #8b5cf6;
+            --glass-card: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg-deep); color: var(--text-main); min-height: 100vh; padding: 2rem 1rem; }
+
+        .container { max-width: 600px; margin: 0 auto; }
+        .card { background: var(--glass-card); border: 1px solid var(--glass-border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+
+        h2 { font-size: 1.4rem; color: #fff; margin-bottom: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+        input, select, textarea {
+            width: 100%; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border);
+            border-radius: 8px; padding: 10px; color: #fff; font-size: 0.9rem; outline: none;
+        }
+        button {
+            width: 100%; background: var(--accent-purple); color: #fff; border: none;
+            padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 0.5rem;
+        }
+        #adminPanel { display: none; }
+
+        .logo-img{
+            height: 100px;
+            width: 100px;
+        }
+        .logo-link{
+            color:#fff;
+            font-weight: bolder;
+            font-size:50px;
+            text-decoration: none;
+            text-align: center;
+        }
+        #red{
+            padding: 10px;
+        }
+        #lol{
+            color: #f59e0b;
+        }
+        
+    </style>
+</head>
+      
+            <a href="index.html" class="logo-link">
+                <img src="pic/logo.png" alt="RK JEWELRY LOGO" class="logo-img">
+            
+            <text class="logo-link"><center>
+            Rk<span id="lol"> JEWELRY</span></center></a>
+        </text>
+<body>
+
+    <div class="container">
+        <!-- Login Screen -->
+        <div class="card" id="loginCard">
+            <h2>Admin Security Login</h2>
+            <div class="form-group">
+                <label>Passcode</label>
+                <input type="password" id="passcode" placeholder="Enter owner passcode">
+            </div>
+            <button onclick="login()">Login</button>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="adminPanel">
+            <!-- Product Upload Board -->
+            <div class="card">
+                <h2>1. Add New Item</h2>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="category">
+                            <option value="Bangles">Bangles</option>
+                            <option value="Bracelets">Bracelets</option>
+                            <option value="Necklaces">Necklaces</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (LKR)</label>
+                        <input type="number" id="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Short Description (e.g., Made with Copper & Rs 5 Coins)</label>
+                        <textarea id="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Clear Photo</label>
+                        <input type="file" id="imageFile" accept="image/*" required>
+                    </div>
+                    <button type="submit" id="btnProdSubmit">Upload Item</button>
+                </form>
+            </div>
+
+            <!-- Bank Gateway Settings Board -->
+            <div class="card">
+                <h2>2. Update Online Payment / Bank Details</h2>
+                <form id="bankForm">
+                    <div class="form-group">
+                        <label>Bank Name</label>
+                        <input type="text" id="bankName" placeholder="e.g., Commercial Bank" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Number</label>
+                        <input type="text" id="accountNo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Holder Name</label>
+                        <input type="text" id="accountHolder" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Branch</label>
+                        <input type="text" id="branch" required>
+                    </div>
+                    <button type="submit" id="btnBankSubmit">Save Bank Gateway Details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbw2AN1gbqQBPmXCnDOPKmHPluGZvPyQEfZbvD4sNNqhzMp7qfYD8uzoZweytzyslXHv/exec";
+        const PASSCODE = "admin@2026"; // மாற்ற விரும்பினால் மாற்றிக் கொள்ளலாம்
+
+        function login() {
+            if(document.getElementById("passcode").value === PASSCODE) {
+                document.getElementById("loginCard").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+            } else {
+                alert("Incorrect passcode!");
+            }
+        }
+
+        // Upload Product
+        document.getElementById("productForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("btnProdSubmit");
+            btn.innerText = "Uploading..."; btn.disabled = true;
+
+            try {
+                const file = document.getElementById("imageFile").files[0];
+                const base64 = await convertBase64(file);
+                
+                const payload = {
+                    action: "addProduct",
+                    data: {
+                        title: document.getElementById("title").value,
+                        category: document.getElementById("category").value,
+                        price: document.getElementById("price").value,
+                        description: document.getElementById("description").value,
+                        imageName: file.name,
+                        imageBase64: base64
+                    }
+                };
+
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                const r = await res.json();
+                if(r.status === "success") { alert("Product uploaded successfully!"); document.getElementById("productForm").reset(); }
+            } catch(err) { alert("Upload failed!"); }
+            finally { btn.innerText = "Upload Item"; btn.disabled = false; }
+        });
+
+        // Save Bank Details
+        document.getElementById("bankForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("btnBankSubmit");
+            btn.innerText = "Saving..."; btn.disabled = true;
+
+            const payload = {
+                action: "updateBank",
+                data: {
+                    bankName: document.getElementById("bankName").value,
+                    accountNo: document.getElementById("accountNo").value,
+                    accountHolder: document.getElementById("accountHolder").value,
+                    branch: document.getElementById("branch").value
+                }
+            };
+
+            try {
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+                const r = await res.json();
+                if(r.status === "success") { alert("Bank details updated successfully!"); }
+            } catch(err) { alert("Save failed!"); }
+            finally { btn.innerText = "Save Bank Gateway Details"; btn.disabled = false; }
+        });
+
+        function convertBase64(file) {
+            return new Promise((res, rej) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => res(reader.result);
+                reader.onerror = e => rej(e);
+            });
+        }
+    </script>
+</body>
+</html>

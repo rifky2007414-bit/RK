@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RK Craft | Copper & Coin Ornaments</title>
+    <link rel="icon" type="image/png" href="pic/favicon.png">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --accent-purple: #8b5cf6;
+            --accent-purple-dark: #7c3aed;
+            --accent-copper: #f59e0b;
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-card: rgba(30, 41, 59, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* Header Navigation */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { font-size:20px; font-weight: 700; color: #fff; text-decoration: none;}
+        .logo-link span { color: var(--accent-copper); }
+
+        .lang-switch {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .lang-switch option { background: var(--bg-deep); color: #fff; }
+
+        /* Hero & Banner */
+        .hero {
+            padding: 3rem 5% 2rem;
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.3rem; margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #fff, var(--accent-purple), var(--accent-copper));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .material-tag {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid var(--accent-copper);
+            color: var(--accent-copper);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem;
+        }
+
+        .delivery-notice-box {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem; margin: 1.5rem auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+            text-align: left; font-size: 0.85rem;
+        }
+
+        .delivery-item { background: rgba(15, 23, 42, 0.5); padding: 10px; border-radius: 8px; }
+        .delivery-item strong { color: #fff; display: block; margin-bottom: 3px; }
+
+        /* Catalog Grid */
+        .controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+        .filter-btn {
+            background: var(--glass-card); border: 1px solid var(--glass-border);
+            color: var(--text-main); padding: 8px 18px; border-radius: 20px;
+            cursor: pointer; transition: 0.3s; font-size: 0.85rem;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--accent-purple); border-color: var(--accent-purple); }
+
+        .catalog {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.8rem; padding: 0 5% 4rem; max-width: 1300px; margin: 0 auto;
+        }
+
+        .card {
+            background: var(--glass-card); border: 1px solid var(--glass-border);
+            border-radius: 16px; overflow: hidden; backdrop-filter: blur(12px);
+            display: flex; flex-direction: column; transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent-purple); }
+
+        .card-img-wrap { width: 100%; height: 260px; overflow: hidden; position: relative; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .card:hover .card-img { transform: scale(1.06); }
+
+        .card-body { padding: 1.2rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title { font-size: 1.1rem; color: #fff; margin-bottom: 0.4rem; }
+        .card-price { font-size: 1.2rem; font-weight: 700; color: var(--accent-copper); margin-bottom: 1rem; }
+
+        .btn {
+            padding: 10px; border-radius: 8px; border: none; font-weight: 600;
+            font-size: 0.85rem; cursor: pointer; text-align: center; text-decoration: none; width: 100%;
+        }
+        .btn-order { background: #25D366; color: #fff; }
+        .btn-order:hover { background: #1eb956; }
+
+        /* Payment Details Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            z-index: 1000; justify-content: center; align-items: center; padding: 1rem;
+        }
+        .modal-content {
+            background: var(--bg-deep); border: 1px solid var(--glass-border);
+            border-radius: 16px; max-width: 500px; width: 100%; padding: 2rem; position: relative;
+        }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        .bank-info { background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-size: 0.9rem; line-height: 1.6; }
+
+        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--glass-border); color: var(--text-muted); font-size: 0.85rem; }
+        .loader { text-align: center; padding: 3rem; color: var(--text-muted); grid-column: 1/-1; }
+        @media(max-width: 600px) { .delivery-notice-box { grid-template-columns: 1fr; } }
+
+        .logo-img{
+            height: 80px;
+            width: 80px;
+        }
+        .logo-link{
+            color:#fff;
+            font-weight: bolder;
+            font-size:xx-large;
+            text-decoration: none;
+        }
+        
+
+
+
+
+        /* ==========================================================================
+   Splash Screen / Boot Intro Styles
+   ========================================================================== */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 0%, var(--bg-deep), var(--bg-space) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.splash-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.splash-logo {
+  width: 220px;
+  animation: pulse-logo 1.5s infinite alternate;
+}
+
+.splash-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.splash-loader {
+  width: 160px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.splash-progress {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-vibrant));
+  animation: load-progress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes pulse-logo {
+  0% { transform: scale(1); opacity: 0.85; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes load-progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+.splash-logo-img {
+  width: 150px;
+  height: auto;
+}
+.text-link{
+  color: rgb(0, 168, 65);
+}
+
+        
+.splash-content{
+            border:1px solid black;
+            background-color: #025788;
+            padding: 50px;
+            border-radius: 15px;
+        }
+
+#ad{
+   
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: var(--accent-purple);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+    </style>
+</head>
+   
+<body>
+
+<div id="splash-screen" class="splash-screen">
+  <div class="splash-content">
+   <img src="pic/logo.png" alt="RK JEWELRY LOGO" class="splash-logo-img">
+          <text x="52" y="32" class="tit">RK Craft</text> 
+    <p class="splash-text">Initializing Enterprise Core...</p>
+    <div class="splash-loader">
+      <div class="splash-progress"></div>
+    </div>
+  </div>
+</div>
+
+    <header>
+                        
+            <img src="pic/logo.png" alt="RK JEWELRY LOGO" class="logo-img">
+        <text class="logo-link">
+            Rk<span> JEWELRY</span>
+        </text>
+        <div>
+            <select class="lang-switch" id="langSelect" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="ta">தமிழ்</option>
+                <option value="si">சிங்களம் (Sinhala)</option>
+            </select>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="material-tag" id="txtMaterialTag">Crafted with Copper, Brass & Rs. 5 Coins</div>
+        <h1 id="txtHeroTitle">Handcrafted Designer Ornaments</h1>
+        <p id="txtHeroDesc" style="color: var(--text-muted); font-size: 0.95rem;">Note: These jewelry items are made from quality Copper, Brass & Coin metals. (Not Gold).</p>
+
+        <div class="delivery-notice-box">
+            <div class="delivery-item">
+                <strong id="txtDelKurunegalaTitle">🚚 Kurunegala District</strong>
+                <span id="txtDelKurunegalaDesc">Direct Hand Delivery. Cash on Delivery or Online Bank Transfer available.</span>
+            </div>
+            <div class="delivery-item">
+                <strong id="txtDelIslandTitle">📦 Island-wide (Other Districts)</strong>
+                <span id="txtDelIslandDesc">Postal / Courier Delivery. Online Bank Transfer payment only.</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="filter-btn active" onclick="filterCategory('All')" id="btnCatAll">All</button>
+            <button class="filter-btn" onclick="filterCategory('Bangles')" id="btnCatBangles">Bangles</button>
+            <button class="filter-btn" onclick="filterCategory('Bracelets')" id="btnCatBracelets">Bracelets</button>
+            <button class="filter-btn" onclick="filterCategory('Necklaces')" id="btnCatNecklaces">Necklaces</button>
+        </div>
+    </section>
+
+    <main class="catalog" id="productContainer">
+        <div class="loader" id="txtLoading">Loading Collection...</div>
+    </main>
+
+    <!-- Payment Gate Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h3 style="color:#fff;" id="txtOrderHeader">Place Order via WhatsApp</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top:5px;" id="txtOrderSub">Choose delivery option and send details on WhatsApp.</p>
+            
+            <div class="bank-info" id="bankInfoBox">
+                <strong style="color:var(--accent-copper);" id="txtBankTitle">Bank Account Details (For Advance Transfer):</strong>
+                <div id="bankDetailsContent" style="margin-top:8px;">Loading Bank Info...</div>
+            </div>
+
+            <button class="btn btn-order" id="confirmWaBtn" onclick="sendWhatsAppOrder()">Proceed to WhatsApp Order</button>
+        </div>
+    </div>
+    <a href="admin.html" id="ad">Admin only</a>
+    <footer>
+        <p>&copy; 2026 RK Craft. Quality Coin & Copper Ornaments.</p>
+    </footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbw2AN1gbqQBPmXCnDOPKmHPluGZvPyQEfZbvD4sNNqhzMp7qfYD8uzoZweytzyslXHv/exec"; // Apps Script Web App URL
+        const SELLER_PHONE = "+94760443501"; // உங்கள் WhatsApp எண்
+
+        let allProducts = [];
+        let bankDetails = {};
+        let selectedProduct = null;
+
+        const translations = {
+            en: {
+                materialTag: "Crafted with Copper, Brass & Rs. 5 Coins",
+                heroTitle: "Handcrafted Designer Ornaments",
+                heroDesc: "Note: These jewelry items are made from quality Copper, Brass & Coin metals. (Not Gold).",
+                delKurunegalaTitle: "🚚 Kurunegala District",
+                delKurunegalaDesc: "Direct Hand Delivery. Cash on Delivery or Online Payment available.",
+                delIslandTitle: "📦 Island-wide (Other Districts)",
+                delIslandDesc: "Postal / Courier Delivery. Online Bank Payment required.",
+                catAll: "All", catBangles: "Bangles", catBracelets: "Bracelets", catNecklaces: "Necklaces",
+                btnOrder: "Buy / Order", loading: "Loading Collection...",
+                bankTitle: "Bank Details (For Online Payment):",
+                orderHeader: "Complete Order via WhatsApp"
+            },
+            ta: {
+                materialTag: "செம்பு, பித்தளை மற்றும் ரூ. 5 நாணயங்களால் செய்யப்பட்டது",
+                heroTitle: "கையால் செய்யப்பட்ட அழகிய ஆபரணங்கள்",
+                heroDesc: "குறிப்பு: இவை செம்பு, பித்தளை மற்றும் நாணய உலோகங்களால் செய்யப்பட்டவை (தங்கம் அல்ல).",
+                delKurunegalaTitle: "🚚 குருநாகல் மாவட்டம்",
+                delKurunegalaDesc: "நேரடி விநியோகம் (Hand Delivery). பணம் செலுத்திப் பெறலாம் (COD) அல்லது Online Payment.",
+                delIslandTitle: "📦 இலங்கை முழுவதும் (மற்ற மாவட்டங்கள்)",
+                delIslandDesc: "தபால் / கூரியர் மூலம் அனுப்பப்படும். Online Bank Payment மட்டும்.",
+                catAll: "எல்லாம்", catBangles: "காப்புகள்", catBracelets: "பிரேஸ்லெட்", catNecklaces: "மாலைகள்",
+                btnOrder: "ஆர்டர் செய்ய", loading: "ஆபரணங்கள் ஏற்றப்படுகின்றன...",
+                bankTitle: "வங்கி விவரங்கள் (Online Payment செய்ய):",
+                orderHeader: "WhatsApp மூலம் ஆர்டர் செய்ய"
+            },
+            si: {
+                materialTag: "තඹ, පිත්තල සහ රු. 5 කාසි වලින් නිර්මාණය කර ඇත",
+                heroTitle: "අතින් සාදන ලද අලංකාර ආභරණ",
+                heroDesc: "සටහන: මේවා තඹ, පිත්තල සහ කාසි ලෝහ වලින් සාදා ඇත (රන් නොවේ).",
+                delKurunegalaTitle: "🚚 කුරුණෑගල දිස්ත්‍රික්කය",
+                delKurunegalaDesc: "කෙලින්ම නිවසටම ගෙනැවිත් දෙනු ලැබේ (COD හෝ Online Payment).",
+                delIslandTitle: "📦 දිවයින පුරා (අනෙකුත් දිස්ත්‍රික්ක)",
+                delIslandDesc: "තැපැල් / කුරියර් මගින් එවනු ලැබේ. Online Bank Payment පමණි.",
+                catAll: "සියල්ල", catBangles: "වලලු", catBracelets: "බ්රේස්ලට්", catNecklaces: "මාල",
+                btnOrder: "ඇණවුම් කරන්න", loading: "ලෝඩ් වෙමින් පවතී...",
+                bankTitle: "බැංකු විස්තර (Online Payment සඳහා):",
+                orderHeader: "WhatsApp හරහා ඇණවුම් කරන්න"
+            }
+        };
+
+        let currentLang = 'en';
+
+        document.addEventListener("DOMContentLoaded", fetchData);
+
+        async function fetchData() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                if (data.status === "success") {
+                    allProducts = data.products;
+                    bankDetails = data.bankDetails;
+                    renderProducts(allProducts);
+                    renderBankInfo();
+                }
+            } catch (e) {
+                document.getElementById("productContainer").innerHTML = `<div class="loader">Failed to load data.</div>`;
+            }
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById("productContainer");
+            container.innerHTML = "";
+            const t = translations[currentLang];
+
+            if(products.length === 0) {
+                container.innerHTML = `<div class="loader">No products found.</div>`;
+                return;
+            }
+
+            products.forEach(p => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                    <div class="card-img-wrap">
+                        <img src="${p.imageurl}" class="card-img" alt="${p.title}" loading="lazy">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${escapeHtml(p.title)}</h3>
+                        <div class="card-price">LKR ${Number(p.price).toLocaleString()}</div>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:10px;">${escapeHtml(p.description)}</p>
+                        <button class="btn btn-order" onclick="openOrderModal('${p.id}')">${t.btnOrder}</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderBankInfo() {
+            const box = document.getElementById("bankDetailsContent");
+            if (bankDetails && bankDetails.bankName) {
+                box.innerHTML = `
+                    <strong>Bank:</strong> ${escapeHtml(bankDetails.bankName)}<br>
+                    <strong>Account No:</strong> ${escapeHtml(bankDetails.accountNo)}<br>
+                    <strong>Holder:</strong> ${escapeHtml(bankDetails.accountHolder)}<br>
+                    <strong>Branch:</strong> ${escapeHtml(bankDetails.branch)}
+                `;
+            } else {
+                box.innerHTML = "Contact us on WhatsApp for Bank Account Details.";
+            }
+        }
+
+        function changeLanguage() {
+            currentLang = document.getElementById("langSelect").value;
+            const t = translations[currentLang];
+
+            document.getElementById("txtMaterialTag").innerText = t.materialTag;
+            document.getElementById("txtHeroTitle").innerText = t.heroTitle;
+            document.getElementById("txtHeroDesc").innerText = t.heroDesc;
+            document.getElementById("txtDelKurunegalaTitle").innerText = t.delKurunegalaTitle;
+            document.getElementById("txtDelKurunegalaDesc").innerText = t.delKurunegalaDesc;
+            document.getElementById("txtDelIslandTitle").innerText = t.delIslandTitle;
+            document.getElementById("txtDelIslandDesc").innerText = t.delIslandDesc;
+            document.getElementById("btnCatAll").innerText = t.catAll;
+            document.getElementById("btnCatBangles").innerText = t.catBangles;
+            document.getElementById("btnCatBracelets").innerText = t.catBracelets;
+            document.getElementById("btnCatNecklaces").innerText = t.catNecklaces;
+            document.getElementById("txtBankTitle").innerText = t.bankTitle;
+            document.getElementById("txtOrderHeader").innerText = t.orderHeader;
+
+            renderProducts(allProducts);
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+            event.target.classList.add("active");
+            if(cat === 'All') renderProducts(allProducts);
+            else renderProducts(allProducts.filter(p => p.category.toLowerCase() === cat.toLowerCase()));
+        }
+
+        function openOrderModal(id) {
+            selectedProduct = allProducts.find(p => p.id === id);
+            document.getElementById("orderModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("orderModal").style.display = "none";
+        }
+
+        function sendWhatsAppOrder() {
+            if(!selectedProduct) return;
+            const msg = `Hello, I want to order:\n\n*Item:* ${selectedProduct.title}\n*Price:* LKR ${selectedProduct.price}\n\n*My Delivery District:* (Kurunegala / Other)`;
+            window.open(`https://wa.me/${SELLER_PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+        }
+
+    // Splash Screen Boot Logic (Auto transition after 2 seconds)
+        window.addEventListener('load', () => {
+        const splashScreen = document.getElementById('splash-screen');
+        if (splashScreen) {
+            setTimeout(() => {
+            splashScreen.classList.add('fade-out');
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
+        });
+
+    </script>
+</body>
+</html>
