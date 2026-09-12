@@ -249,6 +249,58 @@
     text-decoration: none;
     font-size: 0.85rem;
 }
+
+
+/* 1. அனைத்து எலிமெண்ட்களும் திரைக்குள் அடங்க செய்ய */
+* {
+    box-sizing: border-box;
+}
+
+/* 2. பாடி ஸ்கிரீனை விட்டு வெளியே செல்லாமல் தடுக்க */
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden; /* பக்கவாட்டில் தள்ளுவதைத் தடுக்கும் */
+    margin: 0;
+    padding: 0;
+}
+
+/* 3. படங்கள் மொபைல் திரையை விட்டு பெரியதாகாமல் இருக்க */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 4. கன்டெய்னர் அகலம் மொபைலுக்கு ஏற்ப மாற */
+.container, .hero-section, .product-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+/* 5. மொபைல் போன்களுக்கான பிரத்யேக CSS (Responsive Media Query) */
+@media screen and (max-width: 600px) {
+    body {
+        font-size: 14px; /* மொபைலில் டெக்ஸ்ட் அளவைக் குறைக்கும் */
+    }
+
+    /* ஃபில்டர் பொத்தான்கள் மொபைலில் வரிசையாக அமைய */
+    .filter-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+        margin: 4px;
+    }
+
+    /* ப்ராடக்ட் கார்டுகள் மொபைலில் 1 லேஅவுட்டாக அமைய */
+    .product-grid, #productContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+        gap: 15px;
+    }
+}
+
     </style>
 </head>
    
