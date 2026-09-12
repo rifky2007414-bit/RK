@@ -16,6 +16,7 @@
             --glass-border: rgba(255, 255, 255, 0.12);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
+            --black:#000000;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -151,171 +152,171 @@
             text-decoration: none;
         }
         
-
-
-
-
-        /* ==========================================================================
-   Splash Screen / Boot Intro Styles
-   ========================================================================== */
-.splash-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: radial-gradient(circle at 50% 0%, var(--bg-deep), var(--bg-space) 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-
-.splash-screen.fade-out {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.splash-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.splash-logo {
-  width: 220px;
-  animation: pulse-logo 1.5s infinite alternate;
-}
-
-.splash-text {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  letter-spacing: 1px;
-}
-
-.splash-loader {
-  width: 160px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.splash-progress {
-  width: 0%;
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-purple), var(--accent-vibrant));
-  animation: load-progress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes pulse-logo {
-  0% { transform: scale(1); opacity: 0.85; }
-  100% { transform: scale(1.05); opacity: 1; }
-}
-
-@keyframes load-progress {
-  0% { width: 0%; }
-  100% { width: 100%; }
-}
-.splash-logo-img {
-  width: 150px;
-  height: auto;
-}
-.text-link{
-  color: rgb(0, 168, 65);
-}
-
-        
-.splash-content{
-            border:1px solid black;
-            background-color: #025788;
-            padding: 50px;
-            border-radius: 15px;
+        /*==========================================================================
+        Splash Screen / Boot Intro Styles
+        ========================================================================== */
+        .splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--bg-deep);
+        background-image:url(pic/logo.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        transition: opacity 0.6s ease, visibility 0.6s ease;
         }
 
-#ad{
-   
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background-color: var(--accent-purple);
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 0.85rem;
-}
+        .splash-screen.fade-out {
+        opacity: 0;
+        visibility: hidden;
+        }
+
+        .splash-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        }
+
+        .splash-logo {
+        width: 220px;
+        animation: pulse-logo 1.5s infinite alternate;
+        }
+
+        .splash-text {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        }
+
+        .splash-loader {
+        width: 160px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 10px;
+        }
+
+        .splash-progress {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent-purple), var(--accent-vibrant));
+        animation: load-progress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pulse-logo {
+        0% { transform: scale(1); opacity: 0.85; }
+        100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes load-progress {
+        0% { width: 0%; }
+        100% { width: 100%; }
+        }
+        .splash-logo-img {
+        width: 150px;
+        height: auto;
+        }
+        .text-link{
+        color: rgb(0, 168, 65);
+        }
+
+                
+        .splash-content{
+                    border:1px solid black;
+                    padding: 50px;
+                    border-radius: 15px;
+                    background: linear-gradient(135deg, #224566 , black );
+
+                }
+
+        #ad{
+        
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: var(--accent-purple);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
 
 
-/* 1. அனைத்து எலிமெண்ட்களும் திரைக்குள் அடங்க செய்ய */
-* {
-    box-sizing: border-box;
-}
+        /* 1. அனைத்து எலிமெண்ட்களும் திரைக்குள் அடங்க செய்ய */
+        * {
+            box-sizing: border-box;
+        }
 
-/* 2. பாடி ஸ்கிரீனை விட்டு வெளியே செல்லாமல் தடுக்க */
-html, body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden; /* பக்கவாட்டில் தள்ளுவதைத் தடுக்கும் */
-    margin: 0;
-    padding: 0;
-}
+        /* 2. பாடி ஸ்கிரீனை விட்டு வெளியே செல்லாமல் தடுக்க */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden; /* பக்கவாட்டில் தள்ளுவதைத் தடுக்கும் */
+            margin: 0;
+            padding: 0;
+        }
 
-/* 3. படங்கள் மொபைல் திரையை விட்டு பெரியதாகாமல் இருக்க */
-img {
-    max-width: 100%;
-    height: auto;
-}
+        /* 3. படங்கள் மொபைல் திரையை விட்டு பெரியதாகாமல் இருக்க */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
 
-/* 4. கன்டெய்னர் அகலம் மொபைலுக்கு ஏற்ப மாற */
-.container, .hero-section, .product-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-sizing: border-box;
-}
+        /* 4. கன்டெய்னர் அகலம் மொபைலுக்கு ஏற்ப மாற */
+        .container, .hero-section, .product-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding-left: 15px;
+            padding-right: 15px;
+            box-sizing: border-box;
+        }
 
-/* 5. மொபைல் போன்களுக்கான பிரத்யேக CSS (Responsive Media Query) */
-@media screen and (max-width: 600px) {
-    body {
-        font-size: 14px; /* மொபைலில் டெக்ஸ்ட் அளவைக் குறைக்கும் */
-    }
+        /* 5. மொபைல் போன்களுக்கான பிரத்யேக CSS (Responsive Media Query) */
+        @media screen and (max-width: 600px) {
+            body {
+                font-size: 14px; /* மொபைலில் டெக்ஸ்ட் அளவைக் குறைக்கும் */
+            }
 
-    /* ஃபில்டர் பொத்தான்கள் மொபைலில் வரிசையாக அமைய */
-    .filter-btn {
-        padding: 8px 12px;
-        font-size: 13px;
-        margin: 4px;
-    }
+            /* ஃபில்டர் பொத்தான்கள் மொபைலில் வரிசையாக அமைய */
+            .filter-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+                margin: 4px;
+            }
 
-    /* ப்ராடக்ட் கார்டுகள் மொபைலில் 1 லேஅவுட்டாக அமைய */
-    .product-grid, #productContainer {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
-        gap: 15px;
-    }
-}
+            /* ப்ராடக்ட் கார்டுகள் மொபைலில் 1 லேஅவுட்டாக அமைய */
+            .product-grid, #productContainer {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+                gap: 15px;
+            }
+        }
 
     </style>
 </head>
-   
+
 <body>
 
-<div id="splash-screen" class="splash-screen">
-  <div class="splash-content">
-   <img src="pic/logo.png" alt="RK JEWELRY LOGO" class="splash-logo-img">
-          <text x="52" y="32" class="tit">RK Craft</text> 
-    <p class="splash-text">Initializing Enterprise Core...</p>
-    <div class="splash-loader">
-      <div class="splash-progress"></div>
+    <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+    <img src="pic/logo.png" alt="RK JEWELRY LOGO" class="splash-logo-img">
+            <text x="52" y="32" class="tit">RK Craft</text> 
+        <p class="splash-text">Initializing Enterprise Core...</p>
+        <div class="splash-loader">
+        <div class="splash-progress"></div>
+        </div>
     </div>
-  </div>
-</div>
+    </div>
 
     <header>
                         
